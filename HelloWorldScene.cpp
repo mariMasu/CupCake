@@ -72,6 +72,23 @@ bool HelloWorld::init()
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
     
+    
+    
+    
+    auto label2 = Label::createWithTTF("Hello cocos", "fonts/Marker Felt.ttf", 24);
+    
+    // position the label on the center of the screen
+    label2->setPosition(Vec2(origin.x + visibleSize.width/2,
+                            origin.y + label2->getContentSize().height));
+    
+    this->addChild(label2, 1);
+    
+    
+    
+    
+    
+    
+    
     return true;
 }
 
