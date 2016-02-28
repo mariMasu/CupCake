@@ -1,3 +1,4 @@
+#pragma execution_character_set("utf-8")
 #include "HelloWorldScene.h"
 
 USING_NS_CC;
@@ -75,15 +76,36 @@ bool HelloWorld::init()
     
     
     
-    auto label2 = Label::createWithTTF("Hello cocos", "fonts/Marker Felt.ttf", 24);
+    auto label2 = Label::createWithTTF("はろー", "fonts/ヒラギノ角ゴシック W9.ttc", 24);
     
-    // position the label on the center of the screen
-    label2->setPosition(Vec2(origin.x + visibleSize.width/2,
-                            origin.y + label2->getContentSize().height));
+//    label2->setPosition(Vec2(origin.x + visibleSize.width/2,
+//                            origin.y + label2->getContentSize().height));
+    
+
+    
+    //label2->setAnchorPoint(Vec2(0,0));
+    
+    
+    label2->setNormalizedPosition(Vec2(0,0.5));
+
+    
+    auto move = MoveBy::create(10,(Vec2(0,label2->getContentSize().height)));
     
     this->addChild(label2, 1);
     
+    label2->runAction(move);
     
+    
+    auto yazi = Sprite::create("yazi.png");
+    
+    
+    yazi->setAnchorPoint(Vec2(0,0));
+    
+    yazi->setPosition(Vec2(origin.x + visibleSize.width - yazi->getContentSize().width/2, origin.y + visibleSize.height - yazi->getContentSize().height/2));
+    
+    yazi->setScale(0.5);
+    
+    this->addChild(yazi, 0);
     
     
     
