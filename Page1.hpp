@@ -17,6 +17,9 @@
 
 class Page1 :public cocos2d::Layer
 {
+    
+    
+    
 public:
     
     

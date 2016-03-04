@@ -33,7 +33,8 @@ bool ModalWindow::init()
     }
     
     //ダイアログ外透過カラーレイヤー生成
-    _colorSheet = LayerColor::create( Color4B( 255, 255, 255, 64 ) );
+    _colorSheet = LayerColor::create( Color4B( 0, 0, 0, 128 ) );
+    _colorSheet->setGlobalZOrder(5);
     addChild( _colorSheet, 0, 999 );
     
     //タッチイベント設定

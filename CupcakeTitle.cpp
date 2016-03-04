@@ -7,7 +7,7 @@
 //
 
 #include "CupcakeTitle.hpp"
-
+#include "audio/include/SimpleAudioEngine.h"
 #include <Page1.hpp>
 
 USING_NS_CC;
@@ -51,6 +51,8 @@ bool CupcakeTitle::init(){
     auto start = MenuItemImage::create("CupcakeStart.png","CupcakeStartPress.png",
                                        [](Ref* ref){
                                            auto scene = Page1::createScene();
+                                           CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
+
                                            auto transition = TransitionPageTurn::create(1.5, scene,false);
                                            Director::getInstance()->replaceScene(transition);
                                            
