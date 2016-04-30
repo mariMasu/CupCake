@@ -62,7 +62,7 @@ bool Page6::init(){
     
     auto photo2 = MenuItemImage::create("CupcakeMake9.png","CupcakeMake9.png",
                                        [](Ref* ref){
-                                           CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision4.mp3");
+                                           CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision21.mp3");
                                            
                                        });
     

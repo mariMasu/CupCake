@@ -19,6 +19,30 @@ class Tools : public cocos2d::Layer
     cocos2d::Size _winSize;
     
 public:
+    
+    enum class sound
+    {
+        TAP1,
+        TAP2,
+        TAP3,
+        BOYON,
+        KURUN,
+        MILK,
+        BUTTER,
+        SUGAR,
+        BAKINGP,
+        FLOUR,
+        EGG,
+        P0,
+        P1,
+        P2,
+        P3,
+        P4,
+        P5,
+        P6
+        
+    };
+    
     Tools();
     
     virtual ~Tools();
@@ -35,7 +59,11 @@ public:
     
     void addBack(Layer *layer,int tag);
     
-    cocos2d::Scene* createNextBackScean(int swi);
+    cocos2d::Label *blueLabel(std::string str,int size,bool dark);
+    
+    void playSound(enum sound kind);
+    
+    void customAction(cocos2d::Ref *item,int nam);
     
 };
 

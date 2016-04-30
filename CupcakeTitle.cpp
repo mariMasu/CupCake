@@ -7,8 +7,10 @@
 //
 
 #include "CupcakeTitle.hpp"
-#include "audio/include/SimpleAudioEngine.h"
 #include <Page1.hpp>
+
+#include "Tools.hpp"
+
 
 USING_NS_CC;
 
@@ -28,9 +30,11 @@ bool CupcakeTitle::init(){
     }
     
     auto winSize = Director::getInstance()->getWinSize();
-    auto background = Sprite::create("CupcakeBackground.png");
-    background->setPosition(Vec2(winSize.width / 2.0, winSize.height / 2.0));
-    this->addChild(background);
+    
+    auto tools = Tools::create();
+
+    
+    tools->addBackGround(this);
     
     
     auto titleFrame = Sprite::create("CupcakeFrame.png");
@@ -39,20 +43,21 @@ bool CupcakeTitle::init(){
     this->addChild(titleFrame);
     
     
-    auto titleLabel = Label::createWithSystemFont("Making Cupcakes", "Marker Felt", 100);
+    auto titleLabel = tools->blueLabel("Making Cupcakes", 100,true);
+    auto titleButton = MenuItemLabel::create(titleLabel,
+                                             [&](Ref* ref){
+                                                 tools->playSound(Tools::sound::P0);
+                                             });
     
-    titleLabel->setColor(Color3B(0,160,210));
-    titleLabel->enableOutline(Color4B(0, 160, 210, 255),5);
-    
-    titleLabel->setPosition(Vec2(winSize.width / 2.0, winSize.height / 1.7));
-    this->addChild(titleLabel, 2);
+    auto titleLabelMenu = Menu::create(titleButton,NULL);
+    titleLabelMenu->setPosition(Vec2(winSize.width / 2.0, winSize.height / 1.7));
+    this->addChild(titleLabelMenu, 2);
 
     
     auto start = MenuItemImage::create("CupcakeStart.png","CupcakeStartPress.png",
-                                       [](Ref* ref){
+                                       [&](Ref* ref){
                                            auto scene = Page1::createScene();
-                                           CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
-
+                                           tools->playSound(Tools::sound::TAP1);
                                            auto transition = TransitionPageTurn::create(1.5, scene,false);
                                            Director::getInstance()->replaceScene(transition);
                                            
