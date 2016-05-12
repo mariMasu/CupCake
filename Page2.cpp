@@ -12,8 +12,6 @@
 #include "Page3.hpp"
 #include "Tools.hpp"
 
-#include "audio/include/SimpleAudioEngine.h"
-
 
 USING_NS_CC;
 
@@ -37,27 +35,56 @@ bool Page2::init(){
     
     auto winSize = Director::getInstance()->getWinSize();
     
-    
+    tools->addTouchEff(this);
     tools->addBackGround(this);
     tools->addTitleFrame(this);
     
     
-    auto titleLabel = Label::createWithSystemFont("Mix the sugar and buttur", "Marker Felt", 47);
+    auto titleLabel = tools->blueLabel("さとうとバターをまぜよう", 40,true);
     
-    titleLabel->setColor(Color3B(0,160,210));
-    titleLabel->enableOutline(Color4B(0, 160, 210, 255),5);
-    titleLabel->setPosition(Vec2(winSize.width / 2.0, winSize.height / 1.1));
-    this->addChild(titleLabel, 2);
+    auto titleButton = MenuItemLabel::create(titleLabel,
+                                             [&](Ref* ref){
+                                                 
+                                                 auto label = static_cast<MenuItemLabel*>(ref);
+                                                 label->setString("Mix the sugar and buttur");
+                                                 label->setScale(1.1);
+                                                 
+                                                 tools->playSound(Tools::sound::P2);
+                                             });
     
+    auto titleLabelMenu = Menu::create(titleButton,NULL);
+    titleLabelMenu->setPosition(Vec2(winSize.width / 2.0, winSize.height / 1.1));
+    this->addChild(titleLabelMenu, 2);
+    
+    
+    auto actPhoto = Sprite::create("CupcakeMake1.png");
+    actPhoto->setTag(10);
+    actPhoto->setOpacity(0);
+    actPhoto->setScale(1.3);
+    actPhoto->setPosition(Vec2(winSize.width / 2, winSize.height / 2.2));
+    this->addChild(actPhoto);
     
     
     auto photo = MenuItemImage::create("CupcakeMake1.png","CupcakeMake1.png",
-                                      [](Ref* ref){
-                                          CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("boyon1.mp3");
+                                      [&](Ref* ref){
+                                          auto myImg = static_cast<MenuItemImage*>(ref);
+                                          myImg->setOpacity(0);
+                                          
+                                          auto actImg = static_cast<Sprite*>(getChildByTag(10));
+                                          actImg->setOpacity(255);
+                                          actImg->runAction(RotateBy::create(0.2, 0, 180));
+                                          
+                                          tools->playSoundSet(_tapNum, "A");
+                                          
+                                          if(_tapNum > 2){
+                                              _tapNum = 0;
+                                          }else{
+                                            _tapNum++;
+                                          }
                                           
                                       });
     
-    photo->setScale(1.2);
+    photo->setScale(1.3);
     photo->setPosition(Vec2(winSize.width / 2, winSize.height / 2.2));
     
     auto photoMenu = Menu::create(photo, NULL);
@@ -68,9 +95,8 @@ bool Page2::init(){
     
     
     auto next = MenuItemImage::create("CupcakeNext.png","CupcakeNextPress.png",
-                                      [](Ref* ref){
-                                          CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
-                                          auto scene = Page3::createScene();
+                                      [&](Ref* ref){
+                                         tools->playSound(Tools::sound::TAP1);                                          auto scene = Page3::createScene();
                                           auto transition = TransitionPageTurn::create(1.2, scene,false);
                                           Director::getInstance()->replaceScene(transition);
                                       });
@@ -79,8 +105,8 @@ bool Page2::init(){
     
     
     auto back = MenuItemImage::create("CupcakeBack.png","CupcakeBackPress.png",
-                                      [](Ref* ref){
-                                          CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
+                                      [&](Ref* ref){
+                                          tools->playSound(Tools::sound::TAP1);
                                           auto scene = Page1::createScene();
                                           auto transition = TransitionPageTurn::create(1.2, scene,true);
                                           Director::getInstance()->replaceScene(transition);

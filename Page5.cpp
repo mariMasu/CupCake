@@ -39,28 +39,47 @@ bool Page5::init(){
     
     auto winSize = Director::getInstance()->getWinSize();
     
-    
+    tools->addTouchEff(this);
     tools->addBackGround(this);
     tools->addTitleFrame(this);
     
     
     
-    auto titleLabel = Label::createWithSystemFont("Bake for 25 to 30 minutes", "Marker Felt", 47);
+    auto titleLabel = tools->blueLabel("25分やきます", 45,true);
     
-    titleLabel->setColor(Color3B(0,160,210));
-    titleLabel->enableOutline(Color4B(0, 160, 210, 255),5);
-    titleLabel->setPosition(Vec2(winSize.width / 2.0, winSize.height / 1.1));
-    this->addChild(titleLabel, 2);
+    auto titleButton = MenuItemLabel::create(titleLabel,
+                                             [&](Ref* ref){
+                                                 
+                                                 auto label = static_cast<MenuItemLabel*>(ref);
+                                                 label->setString("Bake the cupcakes for 25 minutes");
+                                                 label->setScale(0.8);
+                                                 
+                                                 tools->playSound(Tools::sound::P5);
+                                             });
+    
+    auto titleLabelMenu = Menu::create(titleButton,NULL);
+    titleLabelMenu->setPosition(Vec2(winSize.width / 2.0, winSize.height / 1.1));
+    this->addChild(titleLabelMenu, 2);
 
     
     
     auto image4 = MenuItemImage::create("CupcakeMake7.png","CupcakeMake7.png",
-                                        [this](Ref *pSender){
-                                            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision4.mp3");
+                                        [&](Ref* ref){
+                                            tools->playSound(Tools::sound::KIRAKI);
+                                            tools->customAction(ref,1);
                                             
+                                            auto winS = Director::getInstance()->getWinSize();
+
+
+                                            ParticleSystemQuad* pSys;
+                                            pSys = ParticleSystemQuad::create("yuge.plist");
+                                            pSys->setPosition(Vec2(winS.width / 2.0, winS.height / 2));
+                                            pSys->setAutoRemoveOnFinish(true);
+                                            
+                                            this->addChild(pSys);
                                         });
     
-    image4->setScale(1.2);
+    image4->setScale(1.3);
     image4->setPosition(Vec2(winSize.width / 2, winSize.height / 2.2));
     image4->setRotation(-1.2);
     auto photo4 = Menu::create(image4,NULL);
@@ -69,23 +88,13 @@ bool Page5::init(){
     
     
     auto image3 = MenuItemImage::create("CupcakeMake6.png","CupcakeMake6.png",
-                                        [this](Ref *pSender){
-                                            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision4.mp3");
-                                            auto sender = (MenuItemImage *)pSender;
+                                        [&](Ref* ref){
+                                            tools->playSound(Tools::sound::D3);
                                             
-                                            auto fadeOutAction = FadeOut::create(0.5);
-                                            auto callback = CallFuncN::create([](Ref *sender){
-                                                
-                                                ((MenuItemImage *)sender)->removeFromParent();
-                                            });
-                                            
-                                            auto seq = Sequence::create(fadeOutAction,callback,NULL);
-                                            
-                                            sender->runAction(seq);
-                                            
+                                            tools->customAction(ref,2,Director::getInstance()->getWinSize());
                                         });
     
-    image3->setScale(1.2);
+    image3->setScale(1.3);
     image3->setPosition(Vec2(winSize.width / 2, winSize.height / 2.2));
     image3->setRotation(3.2);
     auto photo3 = Menu::create(image3,NULL);
@@ -95,22 +104,13 @@ bool Page5::init(){
     
     
     auto image2 = MenuItemImage::create("CupcakeMake5.png","CupcakeMake5.png",
-                                        [this](Ref *pSender){
-                                            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
-                                            auto sender = (MenuItemImage *)pSender;
+                                        [&](Ref* ref){
+                                            tools->playSound(Tools::sound::D2);
                                             
-                                            auto fadeOutAction = FadeOut::create(0.5);
-                                            auto callback = CallFuncN::create([](Ref *sender){
-                                                
-                                                ((MenuItemImage *)sender)->removeFromParent();
-                                            });
-                                            
-                                            auto seq = Sequence::create(fadeOutAction,callback,NULL);
-                                            
-                                            sender->runAction(seq);
+                                            tools->customAction(ref,2,Director::getInstance()->getWinSize());
                                         });
     
-    image2->setScale(1.2);
+    image2->setScale(1.3);
     image2->setPosition(Vec2(winSize.width / 2, winSize.height / 2.2));
     image2->setRotation(-1.5);
     auto photo2 = Menu::create(image2,NULL);
@@ -120,23 +120,14 @@ bool Page5::init(){
     
     
     auto image1 = MenuItemImage::create("CupcakeMake4.png","CupcakeMake4.png",
-                                        [this](Ref *pSender){
-                                            CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
-                                            auto sender = (MenuItemImage *)pSender;
+                                        [&](Ref* ref){
+                                            tools->playSound(Tools::sound::D1);
                                             
-                                            auto fadeOutAction = FadeOut::create(0.5);
-                                            auto callback = CallFuncN::create([](Ref *sender){
-                                                
-                                                ((MenuItemImage *)sender)->removeFromParent();
-                                            });
-                                            
-                                            auto seq = Sequence::create(fadeOutAction,callback,NULL);
-                                            
-                                            sender->runAction(seq);
+                                            tools->customAction(ref,2,Director::getInstance()->getWinSize());
                                         });
     
     
-                                            image1->setScale(1.2);
+    image1->setScale(1.3);
     image1->setPosition(Vec2(winSize.width / 2, winSize.height / 2.2));
     image1->setRotation(1.6);
     auto photo1 = Menu::create(image1,NULL);
@@ -147,8 +138,8 @@ bool Page5::init(){
     
     
     auto next = MenuItemImage::create("CupcakeNext.png","CupcakeNextPress.png",
-                                      [](Ref* ref){
-                                          CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
+                                      [&](Ref* ref){
+                                          tools->playSound(Tools::sound::TAP1);
                                           auto scene = Page6::createScene();
                                           auto transition = TransitionPageTurn::create(1.2, scene,false);
                                           Director::getInstance()->replaceScene(transition);
@@ -158,8 +149,8 @@ bool Page5::init(){
     
     
     auto back = MenuItemImage::create("CupcakeBack.png","CupcakeBackPress.png",
-                                      [](Ref* ref){
-                                          CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("decision3.mp3");
+                                      [&](Ref* ref){
+                                          tools->playSound(Tools::sound::TAP1);
                                           auto scene = Page4::createScene();
                                           auto transition = TransitionPageTurn::create(1.2, scene,true);
                                           Director::getInstance()->replaceScene(transition);

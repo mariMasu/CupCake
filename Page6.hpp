@@ -12,12 +12,15 @@
 #include <stdio.h>
 #include "cocos2d.h"
 
+#include "LongMenu.hpp"
 
 
 class Page6 :public cocos2d::Layer
 {
 public:
     
+    MenuItemImage* _photo2;
+    LongMenu* _longMenu;
     
     static cocos2d::Scene* createScene();
     
@@ -27,6 +30,8 @@ public:
     bool init() override;
     
     CREATE_FUNC(Page6);
+    
+    void endSche(float dt);
     
     
 };

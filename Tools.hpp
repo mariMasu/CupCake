@@ -15,18 +15,22 @@
 
 class Tools : public cocos2d::Layer
 {
+public:
     
     cocos2d::Size _winSize;
-    
-public:
     
     enum class sound
     {
         TAP1,
         TAP2,
-        TAP3,
-        BOYON,
-        KURUN,
+        D1,
+        D2,
+        D3,
+        KIRAKI,
+        DRUM,
+        CYMBAL,
+        END,
+        CLAP,
         MILK,
         BUTTER,
         SUGAR,
@@ -39,10 +43,10 @@ public:
         P3,
         P4,
         P5,
-        P6
+        P6a,
+        P6b
         
     };
-    
     Tools();
     
     virtual ~Tools();
@@ -55,6 +59,8 @@ public:
     
     void addTitleFrame(Layer *layer);
     
+    void addTouchEff(Layer *layer);
+    
     void addNext(Layer *layer,int tag);
     
     void addBack(Layer *layer,int tag);
@@ -63,7 +69,8 @@ public:
     
     void playSound(enum sound kind);
     
-    void customAction(cocos2d::Ref *item,int nam);
+    void playSoundSet(int num,std::string kind);
+    void customAction(cocos2d::Ref *item,int nam,cocos2d::Size winSize = cocos2d::Size(0, 0));
     
 };
 

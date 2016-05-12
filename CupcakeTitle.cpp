@@ -29,13 +29,12 @@ bool CupcakeTitle::init(){
         return false;
     }
     
+    
     auto winSize = Director::getInstance()->getWinSize();
     
     auto tools = Tools::create();
-
-    
+    tools->addTouchEff(this);
     tools->addBackGround(this);
-    
     
     auto titleFrame = Sprite::create("CupcakeFrame.png");
     titleFrame->setScale(0.8, 0.6);
@@ -43,9 +42,15 @@ bool CupcakeTitle::init(){
     this->addChild(titleFrame);
     
     
-    auto titleLabel = tools->blueLabel("Making Cupcakes", 100,true);
+    auto titleLabel = tools->blueLabel("カップケーキを作ろう！", 70,true);
+    
     auto titleButton = MenuItemLabel::create(titleLabel,
                                              [&](Ref* ref){
+                                                 
+                                                 auto label = static_cast<MenuItemLabel*>(ref);
+                                                 label->setString("Making Cupcakes");
+                                                 label->setScale(1.5);
+                                                 
                                                  tools->playSound(Tools::sound::P0);
                                              });
     
@@ -74,6 +79,7 @@ bool CupcakeTitle::init(){
     
     return true;
 }
+
 
 Scene* CupcakeTitle::createScene()
 {

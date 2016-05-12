@@ -9,6 +9,8 @@
 #include "Tools.hpp"
 #include "CupcakeTitle.hpp"
 
+#include "TouchEff.hpp"
+
 #include "audio/include/SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -27,6 +29,11 @@ bool Tools::init(){
     if (!Layer::init()) {
         return false;
     }
+    
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->onTouchBegan = CC_CALLBACK_2(Tools::onTouchBegan, this);
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority
+    (listener, this);
     
     _winSize = Director::getInstance()->getWinSize();
     
@@ -53,6 +60,14 @@ void Tools::addTitleFrame(Layer *layer){
     
     layer->addChild(titleFrame);
 }
+
+void Tools::addTouchEff(Layer *layer){
+
+    auto touchEff = TouchEff::create();
+    layer->addChild(touchEff,10);
+    
+}
+
 
 void Tools::addNext(Layer *layer,int tag){
     
@@ -100,13 +115,12 @@ cocos2d::Label* Tools::blueLabel(std::string str,int size,bool dark){
 void Tools::playSound(enum sound kind){
     
     std::string path;
-    float volume = 1;
+    bool loop = false;
     
     switch(kind)
     {
         case sound::TAP1:{
             path = "tap1.mp3";
-            volume = 0.5;
             break;
         }
          
@@ -114,16 +128,37 @@ void Tools::playSound(enum sound kind){
             path = "tap2.mp3";
             break;
         }
-        case sound::TAP3:{
-            path = "tap3.mp3";
+        case sound::D1:{
+            path = "D1.mp3";
             break;
         }
-        case sound::BOYON:{
-            path = "boyon.mp3";
+        case sound::D2:{
+            path = "D2.mp3";
             break;
         }
-        case sound::KURUN:{
-            path = "kurun.mp3";
+        case sound::D3:{
+            path = "D3.mp3";
+            break;
+        }
+        case sound::KIRAKI:{
+            path = "kiraki.mp3";
+            break;
+        }
+        case sound::DRUM:{
+            path = "drum.mp3";
+            break;
+        }
+        case sound::CYMBAL:{
+            path = "symbal.mp3";
+            break;
+        }
+        case sound::CLAP:{
+            path = "clap.mp3";
+            break;
+        }
+        case sound::END:{
+            path = "end.mp3";
+            loop = true;
             break;
         }
         case sound::MILK:{
@@ -168,19 +203,52 @@ void Tools::playSound(enum sound kind){
             break;
         }
         case sound::P4:{
-            path = "Shift_the.mp3";
+            path = "Sift_the.mp3";
             break;
         }
         case sound::P5:{
             path = "Bake_for.mp3";
             break;
         }
-        case sound::P6:{
+        case sound::P6a:{
+            path = "Decorate!.mp3";
+            break;
+        }
+        case sound::P6b:{
             path = "Congratulations!.mp3";
+
             break;
         }
     
     
+    }
+    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(path.c_str(),loop);
+    
+}
+
+void Tools::playSoundSet(int num,std::string kind){
+    
+    std::string path;
+    float volume = 1;
+    
+    if(num == 3){
+        
+        int rnd = random(0, 2);
+        
+        switch (rnd) {
+            case 0:
+                path = kind + "2.mp3";
+                break;
+            case 1:
+                path = kind + "3.mp3";
+                break;
+            case 2:
+                path = kind + "4.mp3";
+                break;
+        }
+    }else{
+        path = kind + "1.mp3";
     }
     
     CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(volume);
@@ -188,24 +256,57 @@ void Tools::playSound(enum sound kind){
     
 }
 
-void Tools::customAction(cocos2d::Ref *item,int num){
+
+void Tools::customAction(cocos2d::Ref *item,int num,Size winSize){
     
     auto actionItem = static_cast<Node*>(item);
     
     if(actionItem->getNumberOfRunningActions()==0){
         if(num == 1){
             
-            auto action1 = RotateTo::create(0.2, -15);
-            auto action2 = RotateTo::create(0.2, 15);
-            auto action3 = RotateTo::create(0.2, 0);
+            auto action1 = RotateBy::create(0.2, -15);
+            auto action2 = RotateBy::create(0.2, 30);
+            auto action3 = RotateBy::create(0.2, -15);
             
             auto actions = Sequence::create(action1,action2,action3, NULL);
             
             actionItem->runAction(actions);
             
-        }else{
+        }else if(num == 2){
+            
+            auto randMinus = [](int num){
+                float rnum = num;
+                if(random(0, 1)){
+                    rnum *= -1;
+                }
+                return rnum;
+            };
+            
+            int max = winSize.width/1.5;
+            auto x = random(0,max);
+            auto y = winSize.height*1.5;
+            auto point = Vec2(randMinus(x), randMinus(y));
+            
+            auto action1 = MoveBy::create(0.4, point);
+            auto action2 = RotateBy::create(0.4,360);
+            auto actions = Spawn::create(action1, action2, NULL);
+            
+            actionItem->runAction(actions);
+            
+        }else if(num == 3){
+            
+            auto action1 = RotateTo::create(0.8, -5);
+            auto action2 = RotateTo::create(0.8, 0);
+            auto action3 = RotateTo::create(0.8, 5);
+            auto action4 = RotateTo::create(0.8, 0);
+            
+            auto actions = Sequence::create(action1,action2,action3,action4, NULL);
+            
+            auto repeat = RepeatForever::create(actions);
+            actionItem->runAction(repeat);
         }
     }
+    
 }
 
 

@@ -9,6 +9,8 @@
 #include "Page1.hpp"
 #include "CupcakeTitle.hpp"
 #include "Page2.hpp"
+#include "Page6.hpp"
+
 
 #include "Tools.hpp"
 
@@ -36,15 +38,20 @@ bool Page1::init(){
     
     auto winSize = Director::getInstance()->getWinSize();
     
-    
+    tools->addTouchEff(this);
     tools->addBackGround(this);
     tools->addTitleFrame(this);
     
     
-    auto titleLabel = tools->blueLabel("Ingredient", 70,true);
+    auto titleLabel = tools->blueLabel("ざいりょう", 60,true);
     
     auto titleButton = MenuItemLabel::create(titleLabel,
                                              [&](Ref* ref){
+                                                 
+                                                 auto label = static_cast<MenuItemLabel*>(ref);
+                                                 label->setString("Ingredients");
+                                                 label->setScale(1.5);
+                                                 
                                                  tools->playSound(Tools::sound::P1);
                                              });
     

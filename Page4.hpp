@@ -19,6 +19,7 @@ class Page4 :public cocos2d::Layer
 {
 public:
     
+    int _tapNum = 0;
     
     static cocos2d::Scene* createScene();
     
